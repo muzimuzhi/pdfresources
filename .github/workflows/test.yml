@@ -18,13 +18,15 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run tests
-        run: l3build check -c config-dvips
+        run: l3build check -c config-dvips metadata-new
+        env:
+          diffexe: "diff -ac --strip-trailing-cr"
 
       - name: Archive failed test output
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: test-diff-files
+          name: pdfresc-diff
           path: |
             build/test*/*.diff
             build/test-config-dvips/
