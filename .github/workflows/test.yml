@@ -40,4 +40,5 @@ jobs:
           name: pdfresc-diff
           path: |
             build/test*/*.diff
-            build/test-config-dvips/
+            build/test-config-dvips/*.pdf
+            build/test-config-dvips/*.log
