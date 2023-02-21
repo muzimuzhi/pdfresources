@@ -7,15 +7,26 @@ jobs:
     name: Regression tests
 
     runs-on: ubuntu-latest
-    container:
-      image: registry.gitlab.com/islandoftex/images/texlive:latest
+    # container:
+    #   # Feb 22, 2023: this provides ghostscript 10.0.0
+    #   # because the image is based on Debian:testing
+    #   # https://packages.debian.org/bookworm/ghostscript
+    #   image: registry.gitlab.com/islandoftex/images/texlive:latest
 
     steps:
-      - name: Update TeX Live
-        run: tlmgr update --self --all
-
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Install TeX Live
+        uses: zauguin/install-texlive@v2
+        with:
+          # List the required TeX Live packages in a separate file to allow reuse in
+          # different workflows.
+          package_file: .github/tl_packages
+
+      - name: Install Ghostscript
+        # Feb 22, 2023: this will install ghostscript 9.55.0
+        run: sudo apt-get install ghostscript
 
       - name: Run tests
         run: l3build check -c config-dvips metadata-new
