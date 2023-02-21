@@ -21,6 +21,7 @@ epstopdf-pkg
 etex-pkg
 hyperxmp
 ifmtarg
+latex-lab
 totpages
 xifthen
 xkeyval
