@@ -1,0 +1,30 @@
+name: l3build test suite
+
+on: [push, pull_request]
+
+jobs:
+  tests:
+    name: Regression tests
+
+    runs-on: ubuntu-latest
+    container:
+      image: registry.gitlab.com/islandoftex/images/texlive:latest
+
+    steps:
+      - name: Update TeX Live
+        run: tlmgr update --self --all
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Run tests
+        run: l3build check -c config-dvips
+
+      - name: Archive failed test output
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-diff-files
+          path: |
+            build/test*/*.diff
+            build/test-config-dvips/
